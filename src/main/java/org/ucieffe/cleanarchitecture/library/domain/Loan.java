@@ -11,17 +11,17 @@ public class Loan {
     private LocalDate endDate;
     private LocalDate dueDate;
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate endDate, LocalDate dueDate) {
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate endDate) {
         this.uuid = uuid;
         this.item = item;
         this.user = user;
         this.startDate = startDate;
-        this.endDate = endDate;
         this.dueDate = dueDate;
+        this.endDate = endDate;
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate) {
-        this(uuid, item, user, startDate, null, null);
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate) {
+        this(uuid, item, user, startDate, dueDate, null);
     }
 
     public UUID getUuid() {
