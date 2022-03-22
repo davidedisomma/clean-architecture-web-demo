@@ -20,6 +20,10 @@ public class Loan {
         this.dueDate = dueDate;
     }
 
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate) {
+        this(uuid, item, user, startDate, null, null);
+    }
+
     public UUID getUuid() {
         return uuid;
     }
@@ -42,5 +46,14 @@ public class Loan {
 
     public LocalDate getDueDate() {
         return dueDate;
+    }
+
+    public boolean isClosed() {
+        return endDate != null;
+    }
+
+    public void end(LocalDate endDate) {
+        this.endDate = endDate;
+        this.item.release();
     }
 }

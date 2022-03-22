@@ -25,7 +25,11 @@ public class Item {
         return isCatalogued;
     }
 
-    public Boolean getReserved() {
+    public Boolean isReserved() {
         return isReserved;
+    }
+
+    public void release() {
+        isReserved = Boolean.FALSE;
     }
 }
