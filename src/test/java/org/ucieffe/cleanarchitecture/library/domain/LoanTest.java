@@ -24,7 +24,7 @@ class LoanTest {
     }
 
     @Test
-    void renew_book_extending_due_date() {
+    void renew_book_extending_due_date_with_given_days() {
         Loan loan = new LoanBuilder()
                 .withDueDate(tenDaysLater)
                 .build();
@@ -33,5 +33,18 @@ class LoanTest {
 
         assertFalse(loan.isClosed());
         assertEquals(fortyDaysLater, loan.getDueDate());
+    }
+
+    @Test
+    void renew_book_not_overcoming_maximum_loan_date() {
+        Loan loan = new LoanBuilder()
+                .withMaximumLoanDate(twentyDaysLater)
+                .withDueDate(today)
+                .build();
+
+        loan.renew(30);
+
+        assertFalse(loan.isClosed());
+        assertEquals(twentyDaysLater, loan.getDueDate());
     }
 }

@@ -4,24 +4,43 @@ import java.time.LocalDate;
 import java.util.UUID;
 
 public class Loan {
-    private UUID uuid;
-    private Item item;
-    private User user;
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private final UUID uuid;
+    private final Item item;
+    private final User user;
+    private final LocalDate startDate;
+    private final LocalDate maximumLoanDate;
     private LocalDate dueDate;
+    private LocalDate endDate;
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate endDate) {
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, LocalDate endDate) {
         this.uuid = uuid;
         this.item = item;
         this.user = user;
         this.startDate = startDate;
         this.dueDate = dueDate;
+        this.maximumLoanDate = maximumLoanDate;
         this.endDate = endDate;
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate) {
-        this(uuid, item, user, startDate, dueDate, null);
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate) {
+        this(uuid, item, user, startDate, dueDate, maximumLoanDate, null);
+    }
+
+    public boolean isClosed() {
+        return endDate != null;
+    }
+
+    public void end(LocalDate endDate) {
+        this.endDate = endDate;
+        this.item.release();
+    }
+
+    public void renew(Integer days) {
+        final LocalDate renewedDueDate = this.dueDate.plusDays(days);
+        if (renewedDueDate.isBefore(maximumLoanDate))
+            this.dueDate = renewedDueDate;
+        else
+            this.dueDate = maximumLoanDate;
     }
 
     public UUID getUuid() {
@@ -48,16 +67,8 @@ public class Loan {
         return dueDate;
     }
 
-    public boolean isClosed() {
-        return endDate != null;
+    public LocalDate getMaximumLoanDate() {
+        return maximumLoanDate;
     }
 
-    public void end(LocalDate endDate) {
-        this.endDate = endDate;
-        this.item.release();
-    }
-
-    public void renew(Integer days) {
-        this.dueDate = dueDate.plusDays(days);
-    }
 }

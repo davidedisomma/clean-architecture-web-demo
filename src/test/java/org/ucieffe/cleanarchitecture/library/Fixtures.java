@@ -16,7 +16,9 @@ public class Fixtures {
     public static final LocalDate today = LocalDate.now();
     public static final LocalDate thirtyDaysAgo = today.minusDays(30);
     public static final LocalDate tenDaysLater = today.plusDays(10);
+    public static final LocalDate twentyDaysLater = today.plusDays(20);
     public static final LocalDate thirtyDaysLater = today.plusDays(30);
     public static final LocalDate fortyDaysLater = today.plusDays(40);
+    public static final LocalDate oneHundredDaysLater = today.plusDays(100);
 
 }
