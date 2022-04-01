@@ -15,6 +15,7 @@ public class LoanBuilder {
     private LocalDate endDate;
     private LocalDate dueDate;
     private LocalDate maximumLoanDate;
+    private Integer howManyRenewals;
 
     public LoanBuilder() {
         this.uuid = UUID.randomUUID();
@@ -23,10 +24,11 @@ public class LoanBuilder {
         this.startDate = thirtyDaysAgo;
         this.dueDate = tenDaysLater;
         this.maximumLoanDate = oneHundredDaysLater;
+        this.howManyRenewals = 0;
     }
 
     public Loan build() {
-        return new Loan(uuid, item, user, startDate, dueDate, maximumLoanDate, endDate);
+        return new Loan(uuid, item, user, startDate, dueDate, maximumLoanDate, howManyRenewals, endDate);
     }
 
     public LoanBuilder withUuid(UUID uuid) {
@@ -61,6 +63,11 @@ public class LoanBuilder {
 
     public LoanBuilder withMaximumLoanDate(LocalDate maximumLoanDate) {
         this.maximumLoanDate = maximumLoanDate;
+        return this;
+    }
+
+    public LoanBuilder withHowManyRenewals(Integer howManyRenewals) {
+        this.howManyRenewals = howManyRenewals;
         return this;
     }
 }

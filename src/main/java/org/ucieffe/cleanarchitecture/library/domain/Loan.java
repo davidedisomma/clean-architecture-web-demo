@@ -9,21 +9,27 @@ public class Loan {
     private final User user;
     private final LocalDate startDate;
     private final LocalDate maximumLoanDate;
+    private Integer howManyRenewals;
     private LocalDate dueDate;
     private LocalDate endDate;
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, LocalDate endDate) {
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, Integer howManyRenewals, LocalDate endDate) {
         this.uuid = uuid;
         this.item = item;
         this.user = user;
         this.startDate = startDate;
         this.dueDate = dueDate;
         this.maximumLoanDate = maximumLoanDate;
+        this.howManyRenewals = howManyRenewals;
         this.endDate = endDate;
     }
 
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, Integer howManyRenewals) {
+        this(uuid, item, user, startDate, dueDate, maximumLoanDate, howManyRenewals, null);
+    }
+
     public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate) {
-        this(uuid, item, user, startDate, dueDate, maximumLoanDate, null);
+        this(uuid, item, user, startDate, dueDate, maximumLoanDate, 0, null);
     }
 
     public boolean isClosed() {
@@ -41,6 +47,11 @@ public class Loan {
             this.dueDate = renewedDueDate;
         else
             this.dueDate = maximumLoanDate;
+        incrementRenewals();
+    }
+
+    private void incrementRenewals() {
+        ++howManyRenewals;
     }
 
     public UUID getUuid() {
@@ -71,4 +82,7 @@ public class Loan {
         return maximumLoanDate;
     }
 
+    public Integer getHowManyRenewals() {
+        return howManyRenewals;
+    }
 }

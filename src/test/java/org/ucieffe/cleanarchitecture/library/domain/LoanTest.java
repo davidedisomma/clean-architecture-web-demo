@@ -3,8 +3,6 @@ package org.ucieffe.cleanarchitecture.library.domain;
 import org.junit.jupiter.api.Test;
 import org.ucieffe.cleanarchitecture.library.Fixtures;
 
-import java.util.UUID;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.ucieffe.cleanarchitecture.library.Fixtures.*;
 
@@ -46,5 +44,19 @@ class LoanTest {
 
         assertFalse(loan.isClosed());
         assertEquals(twentyDaysLater, loan.getDueDate());
+    }
+
+    @Test
+    void increment_counter_whenever_renew_happens() {
+        Loan loan = new LoanBuilder()
+                .withHowManyRenewals(0)
+                .build();
+
+        loan.renew(10);
+        assertEquals(1, loan.getHowManyRenewals());
+        loan.renew(10);
+        assertEquals(2, loan.getHowManyRenewals());
+        loan.renew(10);
+        assertEquals(3, loan.getHowManyRenewals());
     }
 }
