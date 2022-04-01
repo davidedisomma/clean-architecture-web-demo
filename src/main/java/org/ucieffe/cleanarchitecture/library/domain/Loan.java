@@ -56,4 +56,8 @@ public class Loan {
         this.endDate = endDate;
         this.item.release();
     }
+
+    public void renew(Integer days) {
+        this.dueDate = dueDate.plusDays(days);
+    }
 }
