@@ -8,28 +8,28 @@ public class Loan {
     private final Item item;
     private final User user;
     private final LocalDate startDate;
-    private final LocalDate maximumLoanDate;
+    private final LocalDate maximumDueDate;
     private Integer howManyRenewals;
     private LocalDate dueDate;
     private LocalDate endDate;
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, Integer howManyRenewals, LocalDate endDate) {
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate, Integer howManyRenewals, LocalDate endDate) {
         this.uuid = uuid;
         this.item = item;
         this.user = user;
         this.startDate = startDate;
         this.dueDate = dueDate;
-        this.maximumLoanDate = maximumLoanDate;
+        this.maximumDueDate = maximumDueDate;
         this.howManyRenewals = howManyRenewals;
         this.endDate = endDate;
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate, Integer howManyRenewals) {
-        this(uuid, item, user, startDate, dueDate, maximumLoanDate, howManyRenewals, null);
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate, Integer howManyRenewals) {
+        this(uuid, item, user, startDate, dueDate, maximumDueDate, howManyRenewals, null);
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumLoanDate) {
-        this(uuid, item, user, startDate, dueDate, maximumLoanDate, 0, null);
+    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate) {
+        this(uuid, item, user, startDate, dueDate, maximumDueDate, 0, null);
     }
 
     public boolean isClosed() {
@@ -43,14 +43,18 @@ public class Loan {
 
     public void renew(Integer days) {
         final LocalDate renewedDueDate = this.dueDate.plusDays(days);
-        if (renewedDueDate.isBefore(maximumLoanDate))
+        if (isOvercomingMaximumDueDate(renewedDueDate))
             this.dueDate = renewedDueDate;
         else
-            this.dueDate = maximumLoanDate;
-        incrementRenewals();
+            this.dueDate = maximumDueDate;
+        incrementRenewalsNumber();
     }
 
-    private void incrementRenewals() {
+    private boolean isOvercomingMaximumDueDate(LocalDate renewedDueDate) {
+        return renewedDueDate.isBefore(maximumDueDate);
+    }
+
+    private void incrementRenewalsNumber() {
         ++howManyRenewals;
     }
 
@@ -78,8 +82,8 @@ public class Loan {
         return dueDate;
     }
 
-    public LocalDate getMaximumLoanDate() {
-        return maximumLoanDate;
+    public LocalDate getMaximumDueDate() {
+        return maximumDueDate;
     }
 
     public Integer getHowManyRenewals() {

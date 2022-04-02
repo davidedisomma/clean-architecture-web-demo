@@ -36,7 +36,7 @@ class LoanTest {
     @Test
     void renew_book_not_overcoming_maximum_loan_date() {
         Loan loan = new LoanBuilder()
-                .withMaximumLoanDate(twentyDaysLater)
+                .withMaximumDueDate(twentyDaysLater)
                 .withDueDate(today)
                 .build();
 
