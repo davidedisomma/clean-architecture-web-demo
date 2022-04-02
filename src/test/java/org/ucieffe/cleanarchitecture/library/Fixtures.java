@@ -10,6 +10,8 @@ import static java.lang.Boolean.TRUE;
 public class Fixtures {
     public static final User DAVIDE = new User("user-12345", "Davide", "Di Somma",
             LocalDate.of(1971, 8, 25), false);
+    public static final User A_SUSPENDED_USER = new User("user-666", "Louis", "Cyfer",
+            LocalDate.of(1966, 6, 6), true);
 
     public static final Item TDD_BY_EXAMPLE_COPY_2 = new Item("book-3456", "978-0321146533", TRUE, TRUE);
     public static final Item TDD_BY_EXAMPLE_COPY_5 = new Item("book-4567", "978-0321146533", TRUE, TRUE);

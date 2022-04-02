@@ -7,6 +7,7 @@ import org.ucieffe.cleanarchitecture.library.Fixtures;
 import org.ucieffe.cleanarchitecture.library.entity.Loan;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanInputData;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData;
+import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.GetAllBookItemsAvailable;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.GetUserDetails;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.PersistLoan;
@@ -17,6 +18,8 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.ucieffe.cleanarchitecture.library.Fixtures.*;
+import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.LOAN_SUCCESS;
+import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.USER_SUSPENDED;
 
 class EnrollLoanUseCaseTest {
 
@@ -48,6 +51,7 @@ class EnrollLoanUseCaseTest {
 
         EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
 
+        assertEquals(LOAN_SUCCESS, outputData.getOutcome());
         assertEquals(anyUUID.toString(), outputData.getLoanId());
         assertEquals(THIRTY_DAYS_LATER, outputData.getDueDate());
     }
@@ -74,5 +78,18 @@ class EnrollLoanUseCaseTest {
         assertEquals(THIRTY_DAYS_LATER, persistedLoan.getDueDate());
         assertEquals(ONE_HUNDRED_DAYS_LATER, persistedLoan.getMaximumDueDate());
         assertEquals(0, persistedLoan.getHowManyRenewals());
+    }
+
+    @Test
+    void refute_loan_when_user_is_suspended() {
+        when(getUserDetails.findBy("user-666"))
+                .thenReturn(Fixtures.A_SUSPENDED_USER);
+
+        EnrollLoanInputData inputData = new EnrollLoanInputData("user-666", "any", TODAY);
+
+        EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
+
+        assertEquals(USER_SUSPENDED, outputData.getOutcome());
+
     }
 }
