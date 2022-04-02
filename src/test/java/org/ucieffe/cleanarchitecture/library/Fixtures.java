@@ -14,12 +14,12 @@ public class Fixtures {
     public static final Item TDD_BY_EXAMPLE_COPY_2 = new Item("book-3456", "978-0321146533", TRUE, TRUE);
     public static final Item TDD_BY_EXAMPLE_COPY_5 = new Item("book-4567", "978-0321146533", TRUE, TRUE);
 
-    public static final LocalDate today = LocalDate.now();
-    public static final LocalDate thirtyDaysAgo = today.minusDays(30);
-    public static final LocalDate tenDaysLater = today.plusDays(10);
-    public static final LocalDate twentyDaysLater = today.plusDays(20);
-    public static final LocalDate thirtyDaysLater = today.plusDays(30);
-    public static final LocalDate fortyDaysLater = today.plusDays(40);
-    public static final LocalDate oneHundredDaysLater = today.plusDays(100);
+    public static final LocalDate TODAY = LocalDate.now();
+    public static final LocalDate THIRTY_DAYS_AGO = TODAY.minusDays(30);
+    public static final LocalDate TEN_DAYS_LATER = TODAY.plusDays(10);
+    public static final LocalDate TWENTY_DAYS_LATER = TODAY.plusDays(20);
+    public static final LocalDate THIRTY_DAYS_LATER = TODAY.plusDays(30);
+    public static final LocalDate FORTY_DAYS_LATER = TODAY.plusDays(40);
+    public static final LocalDate ONE_HUNDRED_DAYS_LATER = TODAY.plusDays(100);
 
 }

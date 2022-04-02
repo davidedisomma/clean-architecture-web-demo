@@ -14,36 +14,36 @@ class LoanTest {
                 .withItem(Fixtures.TDD_BY_EXAMPLE_COPY_5)
                 .build();
 
-        loan.end(today);
+        loan.end(TODAY);
 
         assertTrue(loan.isClosed());
-        assertEquals(today, loan.getEndDate());
+        assertEquals(TODAY, loan.getEndDate());
         assertFalse(Fixtures.TDD_BY_EXAMPLE_COPY_5.isReserved());
     }
 
     @Test
     void renew_book_extending_due_date_with_given_days() {
         Loan loan = new LoanBuilder()
-                .withDueDate(tenDaysLater)
+                .withDueDate(TEN_DAYS_LATER)
                 .build();
 
         loan.renew(30);
 
         assertFalse(loan.isClosed());
-        assertEquals(fortyDaysLater, loan.getDueDate());
+        assertEquals(FORTY_DAYS_LATER, loan.getDueDate());
     }
 
     @Test
     void renew_book_not_overcoming_maximum_loan_date() {
         Loan loan = new LoanBuilder()
-                .withMaximumDueDate(twentyDaysLater)
-                .withDueDate(today)
+                .withMaximumDueDate(TWENTY_DAYS_LATER)
+                .withDueDate(TODAY)
                 .build();
 
         loan.renew(30);
 
         assertFalse(loan.isClosed());
-        assertEquals(twentyDaysLater, loan.getDueDate());
+        assertEquals(TWENTY_DAYS_LATER, loan.getDueDate());
     }
 
     @Test

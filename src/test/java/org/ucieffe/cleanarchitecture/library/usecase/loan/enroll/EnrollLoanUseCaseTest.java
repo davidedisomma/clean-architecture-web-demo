@@ -4,7 +4,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.ucieffe.cleanarchitecture.library.Fixtures;
-import org.ucieffe.cleanarchitecture.library.entity.Book;
 import org.ucieffe.cleanarchitecture.library.entity.Loan;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanInputData;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData;
@@ -45,12 +44,12 @@ class EnrollLoanUseCaseTest {
                 .thenReturn(List.of(TDD_BY_EXAMPLE_COPY_2, TDD_BY_EXAMPLE_COPY_5));
         when(uuidGenerator.uuid()).thenReturn(anyUUID);
 
-        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", today);
+        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", TODAY);
 
         EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
 
         assertEquals(anyUUID.toString(), outputData.getLoanId());
-        assertEquals(thirtyDaysLater, outputData.getDueDate());
+        assertEquals(THIRTY_DAYS_LATER, outputData.getDueDate());
     }
 
     @Test
@@ -61,7 +60,7 @@ class EnrollLoanUseCaseTest {
                 .thenReturn(List.of(TDD_BY_EXAMPLE_COPY_2, TDD_BY_EXAMPLE_COPY_5));
         when(uuidGenerator.uuid()).thenReturn(anyUUID);
 
-        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", today);
+        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", TODAY);
 
         enrollLoanUseCase.execute(inputData);
 
@@ -71,9 +70,9 @@ class EnrollLoanUseCaseTest {
         assertEquals(anyUUID, persistedLoan.getUuid());
         assertEquals(DAVIDE, persistedLoan.getUser());
         assertEquals(TDD_BY_EXAMPLE_COPY_2, persistedLoan.getItem());
-        assertEquals(today, persistedLoan.getStartDate());
-        assertEquals(thirtyDaysLater, persistedLoan.getDueDate());
-        assertEquals(oneHundredDaysLater, persistedLoan.getMaximumDueDate());
+        assertEquals(TODAY, persistedLoan.getStartDate());
+        assertEquals(THIRTY_DAYS_LATER, persistedLoan.getDueDate());
+        assertEquals(ONE_HUNDRED_DAYS_LATER, persistedLoan.getMaximumDueDate());
         assertEquals(0, persistedLoan.getHowManyRenewals());
     }
 }

@@ -21,9 +21,9 @@ public class LoanBuilder {
         this.uuid = UUID.randomUUID();
         this.item = Fixtures.TDD_BY_EXAMPLE_COPY_5;
         this.user = DAVIDE;
-        this.startDate = thirtyDaysAgo;
-        this.dueDate = tenDaysLater;
-        this.maximumDueDate = oneHundredDaysLater;
+        this.startDate = THIRTY_DAYS_AGO;
+        this.dueDate = TEN_DAYS_LATER;
+        this.maximumDueDate = ONE_HUNDRED_DAYS_LATER;
         this.howManyRenewals = 0;
     }
 
