@@ -1,4 +1,4 @@
-package org.ucieffe.cleanarchitecture.library.domain;
+package org.ucieffe.cleanarchitecture.library.entity;
 
 public class Book {
     private String isbn;

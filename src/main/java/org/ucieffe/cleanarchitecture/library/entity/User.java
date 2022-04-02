@@ -1,4 +1,4 @@
-package org.ucieffe.cleanarchitecture.library.domain;
+package org.ucieffe.cleanarchitecture.library.entity;
 
 import java.time.LocalDate;
 

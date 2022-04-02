@@ -1,7 +1,7 @@
 package org.ucieffe.cleanarchitecture.library;
 
-import org.ucieffe.cleanarchitecture.library.domain.Item;
-import org.ucieffe.cleanarchitecture.library.domain.User;
+import org.ucieffe.cleanarchitecture.library.entity.Item;
+import org.ucieffe.cleanarchitecture.library.entity.User;
 
 import java.time.LocalDate;
 
