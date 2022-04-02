@@ -11,6 +11,7 @@ public class EnrollLoanInputData {
         this.userId = userId;
         this.isbn = isbn;
         this.startDate = startDate;
+
     }
 
     public String getUserId() {

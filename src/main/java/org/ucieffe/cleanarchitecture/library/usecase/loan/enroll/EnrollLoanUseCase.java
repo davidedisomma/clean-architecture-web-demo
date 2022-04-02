@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
+import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData.*;
 import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.LOAN_SUCCESS;
 import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.USER_SUSPENDED;
 
@@ -40,16 +41,24 @@ public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
     public EnrollLoanOutputData execute(EnrollLoanInputData enrollLoanInputData) {
         User userToLoan = getUserDetails.findBy(enrollLoanInputData.getUserId());
         if(userToLoan.getSuspended())
-            return EnrollLoanOutputData.userSuspended();
+            return userSuspended();
         final List<Item> availableBooks = getAllBookItemsAvailable.findBy(enrollLoanInputData.getIsbn());
+        if(availableBooks.isEmpty())
+            return bookItemNotAvailable();
+
+        Loan loan = createLoan(enrollLoanInputData, userToLoan, availableBooks.get(0));
+        persistLoan.persist(loan);
+
+        return loanSuccessful(loan);
+    }
+
+    private Loan createLoan(EnrollLoanInputData enrollLoanInputData, User userToLoan, Item bookItemToLoan) {
         UUID loanId = uuidGenerator.uuid();
         final LocalDate startDate = enrollLoanInputData.getStartDate();
         LocalDate dueDate = startDate.plusDays(30);
         LocalDate maximumDueDate = startDate.plusDays(100);
-        Loan loan = new Loan(loanId, availableBooks.get(0), userToLoan,
+        Loan loan = new Loan(loanId, bookItemToLoan, userToLoan,
                 startDate, dueDate, maximumDueDate);
-        persistLoan.persist(loan);
-
-        return EnrollLoanOutputData.loanSuccessful(loanId.toString(), dueDate);
+        return loan;
     }
 }

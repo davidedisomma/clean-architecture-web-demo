@@ -18,8 +18,7 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.ucieffe.cleanarchitecture.library.Fixtures.*;
-import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.LOAN_SUCCESS;
-import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.USER_SUSPENDED;
+import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.*;
 
 class EnrollLoanUseCaseTest {
 
@@ -37,34 +36,41 @@ class EnrollLoanUseCaseTest {
         uuidGenerator = mock(UUIDGenerator.class);
         persistLoan = mock(PersistLoan.class);
         enrollLoanUseCase = new EnrollLoanUseCase(getUserDetails, getAllBookItemsAvailable, persistLoan, uuidGenerator);
+
+        when(getUserDetails.findBy(DAVIDE_USER_ID))
+                .thenReturn(Fixtures.DAVIDE);
+        when(getAllBookItemsAvailable.findBy(TDD_BY_EXAMPLE_ISBN))
+                .thenReturn(List.of(TDD_BY_EXAMPLE_COPY_2, TDD_BY_EXAMPLE_COPY_5));
+        when(uuidGenerator.uuid()).thenReturn(anyUUID);
     }
 
     @Test
     void return_output_when_enroll_loan() {
-        when(getUserDetails.findBy("user-12345"))
+        when(getUserDetails.findBy(DAVIDE_USER_ID))
                 .thenReturn(Fixtures.DAVIDE);
-        when(getAllBookItemsAvailable.findBy("isbn999"))
+        when(getAllBookItemsAvailable.findBy(TDD_BY_EXAMPLE_ISBN))
                 .thenReturn(List.of(TDD_BY_EXAMPLE_COPY_2, TDD_BY_EXAMPLE_COPY_5));
         when(uuidGenerator.uuid()).thenReturn(anyUUID);
 
-        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", TODAY);
+        EnrollLoanInputData inputData = new EnrollLoanInputData(DAVIDE_USER_ID, TDD_BY_EXAMPLE_ISBN, TODAY);
 
         EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
 
         assertEquals(LOAN_SUCCESS, outputData.getOutcome());
         assertEquals(anyUUID.toString(), outputData.getLoanId());
+        assertEquals(TDD_BY_EXAMPLE_COPY_2.getId(), outputData.getBookItemId());
         assertEquals(THIRTY_DAYS_LATER, outputData.getDueDate());
     }
 
     @Test
     void save_loan_during_enrollment() {
-        when(getUserDetails.findBy("user-12345"))
+        when(getUserDetails.findBy(DAVIDE_USER_ID))
                 .thenReturn(Fixtures.DAVIDE);
-        when(getAllBookItemsAvailable.findBy("isbn999"))
+        when(getAllBookItemsAvailable.findBy(TDD_BY_EXAMPLE_ISBN))
                 .thenReturn(List.of(TDD_BY_EXAMPLE_COPY_2, TDD_BY_EXAMPLE_COPY_5));
         when(uuidGenerator.uuid()).thenReturn(anyUUID);
 
-        EnrollLoanInputData inputData = new EnrollLoanInputData("user-12345", "isbn999", TODAY);
+        EnrollLoanInputData inputData = new EnrollLoanInputData(DAVIDE_USER_ID, TDD_BY_EXAMPLE_ISBN, TODAY);
 
         enrollLoanUseCase.execute(inputData);
 
@@ -82,14 +88,27 @@ class EnrollLoanUseCaseTest {
 
     @Test
     void refute_loan_when_user_is_suspended() {
-        when(getUserDetails.findBy("user-666"))
+        when(getUserDetails.findBy(A_SUSPENDED_USER_ID))
                 .thenReturn(Fixtures.A_SUSPENDED_USER);
 
-        EnrollLoanInputData inputData = new EnrollLoanInputData("user-666", "any", TODAY);
+        EnrollLoanInputData inputData = new EnrollLoanInputData(A_SUSPENDED_USER_ID, "000-0000000000", TODAY);
 
         EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
 
         assertEquals(USER_SUSPENDED, outputData.getOutcome());
+    }
 
+    @Test
+    void refute_loan_when_book_item_is_not_available() {
+        when(getUserDetails.findBy(DAVIDE_USER_ID))
+                .thenReturn(DAVIDE);
+        when(getAllBookItemsAvailable.findBy(TDD_BY_EXAMPLE_ISBN))
+                .thenReturn(List.of());
+
+        EnrollLoanInputData inputData = new EnrollLoanInputData(DAVIDE_USER_ID, TDD_BY_EXAMPLE_ISBN, TODAY);
+
+        EnrollLoanOutputData outputData = enrollLoanUseCase.execute(inputData);
+
+        assertEquals(BOOK_ITEM_NOT_AVAILABLE, outputData.getOutcome());
     }
 }
