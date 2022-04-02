@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import static java.lang.Boolean.TRUE;
 
 public class Fixtures {
-    public static final String DAVIDE_USER_ID = "user-12345";
+    public static final String DAVIDE_USER_ID = "12345";
     public static final User DAVIDE = new User(DAVIDE_USER_ID, "Davide", "Di Somma",
             LocalDate.of(1971, 8, 25), false);
     public static final String A_SUSPENDED_USER_ID = "66666";
