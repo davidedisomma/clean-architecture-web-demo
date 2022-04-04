@@ -5,5 +5,5 @@ import org.ucieffe.cleanarchitecture.library.entity.Item;
 import java.util.List;
 
 public interface GetAllBookItemsAvailable {
-    List<Item> findBy(String isbn);
+    List<Item> findAllBy(String isbn);
 }

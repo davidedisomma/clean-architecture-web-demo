@@ -6,7 +6,6 @@ import org.ucieffe.cleanarchitecture.library.entity.User;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanInputBoundary;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanInputData;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData;
-import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.GetAllBookItemsAvailable;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.GetUserDetails;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.PersistLoan;
@@ -16,8 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData.*;
-import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.LOAN_SUCCESS;
-import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.LoanOutcome.USER_SUSPENDED;
 
 public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
 
@@ -42,7 +39,7 @@ public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
         User userToLoan = getUserDetails.findBy(enrollLoanInputData.getUserId());
         if(userToLoan.getSuspended())
             return userSuspended();
-        final List<Item> availableBooks = getAllBookItemsAvailable.findBy(enrollLoanInputData.getIsbn());
+        final List<Item> availableBooks = getAllBookItemsAvailable.findAllBy(enrollLoanInputData.getIsbn());
         if(availableBooks.isEmpty())
             return bookItemNotAvailable();
 
