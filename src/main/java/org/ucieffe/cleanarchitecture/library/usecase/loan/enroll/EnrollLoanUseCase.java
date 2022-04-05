@@ -1,6 +1,6 @@
 package org.ucieffe.cleanarchitecture.library.usecase.loan.enroll;
 
-import org.ucieffe.cleanarchitecture.library.entity.Item;
+import org.ucieffe.cleanarchitecture.library.entity.BookItem;
 import org.ucieffe.cleanarchitecture.library.entity.Loan;
 import org.ucieffe.cleanarchitecture.library.entity.User;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanInputBoundary;
@@ -14,8 +14,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-import static org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.in.EnrollLoanOutputData.*;
-
 public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
 
     private final GetUserDetails getUserDetails;
@@ -27,7 +25,6 @@ public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
                              GetAllBookItemsAvailable getAllBookItemsAvailable,
                              PersistLoan persistLoan,
                              UUIDGenerator uuidGenerator) {
-
         this.getUserDetails = getUserDetails;
         this.getAllBookItemsAvailable = getAllBookItemsAvailable;
         this.persistLoan = persistLoan;
@@ -38,18 +35,21 @@ public class EnrollLoanUseCase implements EnrollLoanInputBoundary {
     public EnrollLoanOutputData execute(EnrollLoanInputData enrollLoanInputData) {
         User userToLoan = getUserDetails.findBy(enrollLoanInputData.getUserId());
         if(userToLoan.getSuspended())
-            return userSuspended();
-        final List<Item> availableBooks = getAllBookItemsAvailable.findAllBy(enrollLoanInputData.getIsbn());
+            return EnrollLoanOutputData.userSuspended();
+        final List<BookItem> availableBooks =
+                getAllBookItemsAvailable.findAllBy(enrollLoanInputData.getIsbn());
         if(availableBooks.isEmpty())
-            return bookItemNotAvailable();
+            return EnrollLoanOutputData.bookItemNotAvailable();
 
         Loan loan = createLoan(enrollLoanInputData, userToLoan, availableBooks.get(0));
         persistLoan.persist(loan);
 
-        return loanSuccessful(loan);
+        return EnrollLoanOutputData.loanSuccessful(loan);
     }
 
-    private Loan createLoan(EnrollLoanInputData enrollLoanInputData, User userToLoan, Item bookItemToLoan) {
+    private Loan createLoan(EnrollLoanInputData enrollLoanInputData,
+                            User userToLoan,
+                            BookItem bookItemToLoan) {
         UUID loanId = uuidGenerator.uuid();
         final LocalDate startDate = enrollLoanInputData.getStartDate();
         LocalDate dueDate = startDate.plusDays(30);

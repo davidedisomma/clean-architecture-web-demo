@@ -3,7 +3,7 @@ package org.ucieffe.cleanarchitecture.library.adapter.out.persistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
-import org.ucieffe.cleanarchitecture.library.entity.Item;
+import org.ucieffe.cleanarchitecture.library.entity.BookItem;
 import org.ucieffe.cleanarchitecture.library.usecase.loan.enroll.port.out.GetAllBookItemsAvailable;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class BookItemPersistenceAdapter implements GetAllBookItemsAvailable {
     private BookItemRepository bookItemRepository;
 
     @Override
-    public List<Item> findAllBy(String isbn) {
+    public List<BookItem> findAllBy(String isbn) {
         Example<BookItemJpaEntity> example = Example.of(BookItemJpaEntity.from(isbn, TRUE, FALSE));
         List<BookItemJpaEntity> bookItemsByIsbn = bookItemRepository.findAll(example);
 

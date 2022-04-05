@@ -5,7 +5,7 @@ import java.util.UUID;
 
 public class Loan {
     private final UUID uuid;
-    private final Item item;
+    private final BookItem bookItem;
     private final User user;
     private final LocalDate startDate;
     private final LocalDate maximumDueDate;
@@ -13,9 +13,16 @@ public class Loan {
     private LocalDate dueDate;
     private LocalDate endDate;
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate, Integer howManyRenewals, LocalDate endDate) {
+    public Loan(UUID uuid,
+                BookItem bookItem,
+                User user,
+                LocalDate startDate,
+                LocalDate dueDate,
+                LocalDate maximumDueDate,
+                Integer howManyRenewals,
+                LocalDate endDate) {
         this.uuid = uuid;
-        this.item = item;
+        this.bookItem = bookItem;
         this.user = user;
         this.startDate = startDate;
         this.dueDate = dueDate;
@@ -24,25 +31,27 @@ public class Loan {
         this.endDate = endDate;
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate, Integer howManyRenewals) {
-        this(uuid, item, user, startDate, dueDate, maximumDueDate, howManyRenewals, null);
+    public Loan(UUID uuid,
+                BookItem bookItem,
+                User user,
+                LocalDate startDate,
+                LocalDate dueDate,
+                LocalDate maximumDueDate,
+                Integer howManyRenewals) {
+        this(uuid, bookItem, user, startDate, dueDate, maximumDueDate, howManyRenewals, null);
     }
 
-    public Loan(UUID uuid, Item item, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate) {
-        this(uuid, item, user, startDate, dueDate, maximumDueDate, 0, null);
-    }
-
-    public boolean isClosed() {
-        return endDate != null;
+    public Loan(UUID uuid, BookItem bookItem, User user, LocalDate startDate, LocalDate dueDate, LocalDate maximumDueDate) {
+        this(uuid, bookItem, user, startDate, dueDate, maximumDueDate, 0, null);
     }
 
     public void end(LocalDate endDate) {
         this.endDate = endDate;
-        this.item.release();
+        this.bookItem.release();
     }
 
-    public void renew(Integer days) {
-        final LocalDate renewedDueDate = this.dueDate.plusDays(days);
+    public void renew(Integer extensionDays) {
+        final LocalDate renewedDueDate = this.dueDate.plusDays(extensionDays);
         if (isOvercomingMaximumDueDate(renewedDueDate))
             this.dueDate = renewedDueDate;
         else
@@ -58,12 +67,16 @@ public class Loan {
         ++howManyRenewals;
     }
 
+    public boolean isClosed() {
+        return endDate != null;
+    }
+
     public UUID getUuid() {
         return uuid;
     }
 
-    public Item getItem() {
-        return item;
+    public BookItem getItem() {
+        return bookItem;
     }
 
     public User getUser() {

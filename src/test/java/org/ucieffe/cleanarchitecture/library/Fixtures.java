@@ -1,6 +1,6 @@
 package org.ucieffe.cleanarchitecture.library;
 
-import org.ucieffe.cleanarchitecture.library.entity.Item;
+import org.ucieffe.cleanarchitecture.library.entity.BookItem;
 import org.ucieffe.cleanarchitecture.library.entity.User;
 
 import java.time.LocalDate;
@@ -16,8 +16,8 @@ public class Fixtures {
             LocalDate.of(1966, 6, 6), true);
 
     public static final String TDD_BY_EXAMPLE_ISBN = "978-0321146533";
-    public static final Item TDD_BY_EXAMPLE_COPY_2 = new Item("book-3456", TDD_BY_EXAMPLE_ISBN, TRUE, TRUE);
-    public static final Item TDD_BY_EXAMPLE_COPY_5 = new Item("book-4567", TDD_BY_EXAMPLE_ISBN, TRUE, TRUE);
+    public static final BookItem TDD_BY_EXAMPLE_COPY_2 = new BookItem("book-3456", TDD_BY_EXAMPLE_ISBN, TRUE, TRUE);
+    public static final BookItem TDD_BY_EXAMPLE_COPY_5 = new BookItem("book-4567", TDD_BY_EXAMPLE_ISBN, TRUE, TRUE);
 
     public static final LocalDate TODAY = LocalDate.now();
     public static final LocalDate THIRTY_DAYS_AGO = TODAY.minusDays(30);

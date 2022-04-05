@@ -9,7 +9,7 @@ import static org.ucieffe.cleanarchitecture.library.Fixtures.*;
 
 public class LoanBuilder {
     private UUID uuid;
-    private Item item;
+    private BookItem bookItem;
     private User user;
     private LocalDate startDate;
     private LocalDate endDate;
@@ -19,7 +19,7 @@ public class LoanBuilder {
 
     public LoanBuilder() {
         this.uuid = UUID.randomUUID();
-        this.item = Fixtures.TDD_BY_EXAMPLE_COPY_5;
+        this.bookItem = Fixtures.TDD_BY_EXAMPLE_COPY_5;
         this.user = DAVIDE;
         this.startDate = THIRTY_DAYS_AGO;
         this.dueDate = TEN_DAYS_LATER;
@@ -28,7 +28,7 @@ public class LoanBuilder {
     }
 
     public Loan build() {
-        return new Loan(uuid, item, user, startDate, dueDate, maximumDueDate, howManyRenewals, endDate);
+        return new Loan(uuid, bookItem, user, startDate, dueDate, maximumDueDate, howManyRenewals, endDate);
     }
 
     public LoanBuilder withUuid(UUID uuid) {
@@ -36,8 +36,8 @@ public class LoanBuilder {
         return this;
     }
 
-    public LoanBuilder withItem(Item item) {
-        this.item = item;
+    public LoanBuilder withItem(BookItem bookItem) {
+        this.bookItem = bookItem;
         return this;
     }
 

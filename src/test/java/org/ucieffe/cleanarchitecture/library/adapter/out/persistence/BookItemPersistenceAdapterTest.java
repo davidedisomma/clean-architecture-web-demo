@@ -5,7 +5,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.ucieffe.cleanarchitecture.library.entity.Item;
+import org.ucieffe.cleanarchitecture.library.entity.BookItem;
 
 import java.util.List;
 
@@ -31,7 +31,7 @@ class BookItemPersistenceAdapterTest {
         createBookItemWith("isbn_1", "book_4", TRUE, TRUE);
         createBookItemWith("isbn_2", "book_10", TRUE, FALSE);
 
-        List<Item> bookItems = bookItemPersistenceAdapter.findAllBy("isbn_1");
+        List<BookItem> bookItems = bookItemPersistenceAdapter.findAllBy("isbn_1");
 
         assertEquals(2, bookItems.size());
         assertTrue(
