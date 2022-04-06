@@ -15,9 +15,10 @@ public class BookItemMapper {
                 );
     }
 
-    public static List<BookItem> mapToBookItemList(List<BookItemJpaEntity> bookItemJpaList) {
+    public static List<BookItem> mapToBookItemList(
+            List<BookItemJpaEntity> bookItemJpaList) {
         return bookItemJpaList.stream()
-                .map(bookItemJpa -> BookItemMapper.mapToBookItem(bookItemJpa))
+                .map(BookItemMapper::mapToBookItem)
                 .collect(Collectors.toUnmodifiableList());
     }
 }

@@ -12,15 +12,18 @@ import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 
 @Service
-public class BookItemPersistenceAdapter implements GetAllBookItemsAvailable {
+public class BookItemPersistenceAdapter
+        implements GetAllBookItemsAvailable {
 
     @Autowired
     private BookItemRepository bookItemRepository;
 
     @Override
     public List<BookItem> findAllBy(String isbn) {
-        Example<BookItemJpaEntity> example = Example.of(BookItemJpaEntity.from(isbn, TRUE, FALSE));
-        List<BookItemJpaEntity> bookItemsByIsbn = bookItemRepository.findAll(example);
+        Example<BookItemJpaEntity> example =
+                Example.of(BookItemJpaEntity.from(isbn, TRUE, FALSE));
+        List<BookItemJpaEntity> bookItemsByIsbn =
+                bookItemRepository.findAll(example);
 
         return BookItemMapper.mapToBookItemList(bookItemsByIsbn);
     }

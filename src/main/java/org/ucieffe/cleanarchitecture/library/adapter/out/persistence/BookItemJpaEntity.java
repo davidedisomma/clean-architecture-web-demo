@@ -15,6 +15,16 @@ public class BookItemJpaEntity {
     public BookItemJpaEntity() {
     }
 
+    public static BookItemJpaEntity from(String isbn,
+                                         Boolean isCatalogued,
+                                         Boolean isReserved) {
+        BookItemJpaEntity bookItem = new BookItemJpaEntity();
+        bookItem.setIsbn(isbn);
+        bookItem.setCatalogued(isCatalogued);
+        bookItem.setReserved(isReserved);
+        return bookItem;
+    }
+
     public String getId() {
         return id;
     }
@@ -45,13 +55,5 @@ public class BookItemJpaEntity {
 
     public void setReserved(Boolean reserved) {
         isReserved = reserved;
-    }
-
-    public static BookItemJpaEntity from(String isbn, Boolean isCatalogued, Boolean isReserved) {
-        BookItemJpaEntity bookItem = new BookItemJpaEntity();
-        bookItem.setIsbn(isbn);
-        bookItem.setCatalogued(isCatalogued);
-        bookItem.setReserved(isReserved);
-        return bookItem;
     }
 }
